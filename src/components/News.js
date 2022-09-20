@@ -1,6 +1,7 @@
 import React from 'react'
 import Newsitem from './Newsitem'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+
 
 export default function News() {
 
@@ -34,6 +35,51 @@ export default function News() {
       ];
      const [articles, setarticles] = useState(articls);
      const [loading,setloading] = useState(false);
+     const [page,setPage] = useState(1);
+     const[totalresults,setTotalResults] = useState(0);
+     
+     const updatenews = async ()=>
+     {
+          let url = "https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe";
+          let data = await fetch(url);
+          let parsedData = await data.json();
+          console.log(parsedData);
+          setarticles(parsedData.articles);
+          setTotalResults(parsedData.totalresults);
+
+     } 
+
+     const handleprevious = async ()=>
+     {
+          let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page-1}&pageSize=20`;
+          let data = await fetch(url);
+          let parsedData = await data.json();
+          console.log(parsedData);
+          setarticles(parsedData.articles);
+          setPage(page-1);
+
+     } 
+
+     const handlenext = async ()=>
+     {
+          if(page +1 > Math.ceil(totalresults/20))
+          {    
+          }
+          else{
+               let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page+1}&pageSize=20`;
+               let data = await fetch(url);
+               let parsedData = await data.json();
+               console.log(parsedData);
+               setarticles(parsedData.articles);
+               setPage(page+1);
+
+          }
+     } 
+
+     useEffect (()=>
+     {
+          updatenews();
+     }, [])
 
   return (
     <div className='container my-3'>
@@ -42,10 +88,15 @@ export default function News() {
         {articles.map((element)=>
         {
           return<div className="col md-4" key = {element.url}>
-              <Newsitem  title={element.title.slice(0,40)} description={element.description.slice(0,88)} imageurl = {element.urlToImage} newsurl = {element.url}></Newsitem>
+              <Newsitem  title={element.title?element.title.slice(0,40):""} description={element.description?element.description.slice(0,88):""} imageurl = {element.urlToImage?element.urlToImage:""} newsurl = {element.url}></Newsitem>
           </div>
           })}
         </div>
+
+          <div className='container d-flex  justify-content-between'>
+            <button disabled = {page<=1} onClick={handleprevious} type="button" class="btn btn-default">&laquo; Previous</button>
+           <button onClick={handlenext} type="button" class="btn btn-default">Next &raquo;</button>
+        </div>
     </div>
-  )
+  )  
 }
