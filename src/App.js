@@ -7,7 +7,7 @@ function App() {
   return (
     <>
      <Navbar></Navbar>
-    <News></News>
+    <News headlines ='NewsMania - Top Headlines' pageSize = {8} ></News>
     </>
    
   );

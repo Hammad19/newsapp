@@ -1,9 +1,10 @@
 import React from 'react'
 import Newsitem from './Newsitem'
 import { useState,useEffect } from 'react'
+import Spinner from './Spinner';
 
 
-export default function News() {
+export default function News(props) {
 
      let articls = [
           {
@@ -40,38 +41,47 @@ export default function News() {
      
      const updatenews = async ()=>
      {
-          let url = "https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe";
+          let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page-1}&pageSize=${props.pageSize}`;
           let data = await fetch(url);
           let parsedData = await data.json();
-          console.log(parsedData);
+          //console.log(parsedData);
           setarticles(parsedData.articles);
-          setTotalResults(parsedData.totalresults);
+          setTotalResults(parsedData.totalResults);
+          //console.log(totalresults)
 
      } 
 
      const handleprevious = async ()=>
      {
-          let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page-1}&pageSize=20`;
+          setloading(true);
+          let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page-1}&pageSize=${props.pageSize}`;
           let data = await fetch(url);
           let parsedData = await data.json();
-          console.log(parsedData);
+          //console.log(parsedData);
           setarticles(parsedData.articles);
           setPage(page-1);
+          setloading(false);
 
      } 
 
      const handlenext = async ()=>
      {
-          if(page +1 > Math.ceil(totalresults/20))
+          if( page + 1 > Math.ceil(totalresults/props.pageSize))
           {    
+
           }
           else{
-               let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page+1}&pageSize=20`;
+
+               setloading(true);
+               let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page+1}&pageSize=${props.pageSize}`;
                let data = await fetch(url);
                let parsedData = await data.json();
                console.log(parsedData);
                setarticles(parsedData.articles);
                setPage(page+1);
+              //  console.log(page)
+              //  console.log(totalresults)
+               setloading(false);
 
           }
      } 
@@ -83,19 +93,20 @@ export default function News() {
 
   return (
     <div className='container my-3'>
-        <h1>NewsMania - Top Headlines</h1>
+        <h1 className='text-center'>{props.headlines}</h1>
+        <Spinner loading = {loading}></Spinner>
         <div className="row d-flex justify-content-center ">
         {articles.map((element)=>
         {
-          return<div className="col md-4" key = {element.url}>
+          return !loading &&<div className="col md-4" key = {element.url}>
               <Newsitem  title={element.title?element.title.slice(0,40):""} description={element.description?element.description.slice(0,88):""} imageurl = {element.urlToImage?element.urlToImage:""} newsurl = {element.url}></Newsitem>
           </div>
           })}
         </div>
 
           <div className='container d-flex  justify-content-between'>
-            <button disabled = {page<=1} onClick={handleprevious} type="button" class="btn btn-default">&laquo; Previous</button>
-           <button onClick={handlenext} type="button" class="btn btn-default">Next &raquo;</button>
+            <button disabled = {page<=1} onClick={handleprevious} type="button" className="btn btn-dark">&laquo; Previous</button>
+           <button disabled = {page + 1 > Math.ceil(totalresults/props.pageSize)} onClick={handlenext} type="button" className="btn btn-dark">Next &raquo;</button>
         </div>
     </div>
   )  
