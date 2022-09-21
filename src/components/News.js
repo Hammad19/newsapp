@@ -41,7 +41,7 @@ export default function News(props) {
      
      const updatenews = async ()=>
      {
-          let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page-1}&pageSize=${props.pageSize}`;
+          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page-1}&pageSize=${props.pageSize}`;
           let data = await fetch(url);
           let parsedData = await data.json();
           //console.log(parsedData);
@@ -50,30 +50,25 @@ export default function News(props) {
           //console.log(totalresults)
 
      } 
-
      const handleprevious = async ()=>
      {
           setloading(true);
-          let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page-1}&pageSize=${props.pageSize}`;
+          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page-1}&pageSize=${props.pageSize}`;
           let data = await fetch(url);
           let parsedData = await data.json();
           //console.log(parsedData);
           setarticles(parsedData.articles);
           setPage(page-1);
           setloading(false);
-
      } 
 
      const handlenext = async ()=>
      {
           if( page + 1 > Math.ceil(totalresults/props.pageSize))
-          {    
-
-          }
+          {     }
           else{
-
                setloading(true);
-               let url = `https://newsapi.org/v2/top-headlines?country=US&apiKey=0eac8158287f4625aae58d2ad60e12fe&page=${page+1}&pageSize=${props.pageSize}`;
+               let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}s&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
                let data = await fetch(url);
                let parsedData = await data.json();
                console.log(parsedData);
@@ -82,10 +77,8 @@ export default function News(props) {
               //  console.log(page)
               //  console.log(totalresults)
                setloading(false);
-
           }
      } 
-
      useEffect (()=>
      {
           updatenews();
@@ -93,7 +86,7 @@ export default function News(props) {
 
   return (
     <div className='container my-3'>
-        <h1 className='text-center'>{props.headlines}</h1>
+        <h1  style ={{margin: '40px'}}className='text-center'>{props.headlines}</h1>
         <Spinner loading = {loading}></Spinner>
         <div className="row d-flex justify-content-center ">
         {articles.map((element)=>
@@ -103,7 +96,6 @@ export default function News(props) {
           </div>
           })}
         </div>
-
           <div className='container d-flex  justify-content-between'>
             <button disabled = {page<=1} onClick={handleprevious} type="button" className="btn btn-dark">&laquo; Previous</button>
            <button disabled = {page + 1 > Math.ceil(totalresults/props.pageSize)} onClick={handlenext} type="button" className="btn btn-dark">Next &raquo;</button>

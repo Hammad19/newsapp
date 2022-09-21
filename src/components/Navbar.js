@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Navbar() {
   return (
-    <div><nav className="navbar navbar-expand-lg bg-light">
+    <div><nav className="navbar navbar-dark navbar-expand-lg bg-dark ">
     <div className="container-fluid">
       <a className="navbar-brand" href="/">NewsMania</a>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,9 +13,14 @@ export default function Navbar() {
           <li className="nav-item">
             <a className="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/">Link</a>
-          </li>
+          <li className="nav-item"><a className="nav-link" href="/">Link</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">business</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">entertainment</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">general</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">health</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">science</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">sports</a></li>
+           <li className="nav-item"><a className="nav-link" href="/">technology</a></li>
         </ul>
       </div>
     </div>
