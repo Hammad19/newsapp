@@ -41,43 +41,30 @@ export default function News(props) {
      
      const updatenews = async ()=>
      {
-          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page-1}&pageSize=${props.pageSize}`;
+          setloading(true);
+          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pagesize}`;
           let data = await fetch(url);
           let parsedData = await data.json();
           //console.log(parsedData);
           setarticles(parsedData.articles);
           setTotalResults(parsedData.totalResults);
+          setloading(false);
           //console.log(totalresults)
 
      } 
      const handleprevious = async ()=>
      {
-          setloading(true);
-          let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page-1}&pageSize=${props.pageSize}`;
-          let data = await fetch(url);
-          let parsedData = await data.json();
-          //console.log(parsedData);
-          setarticles(parsedData.articles);
+          
           setPage(page-1);
-          setloading(false);
+          updatenews();
+          
      } 
 
      const handlenext = async ()=>
-     {
-          if( page + 1 > Math.ceil(totalresults/props.pageSize))
-          {     }
-          else{
-               setloading(true);
-               let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}s&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
-               let data = await fetch(url);
-               let parsedData = await data.json();
-               console.log(parsedData);
-               setarticles(parsedData.articles);
+     {     
                setPage(page+1);
-              //  console.log(page)
-              //  console.log(totalresults)
-               setloading(false);
-          }
+               updatenews();
+        
      } 
      useEffect (()=>
      {
@@ -92,13 +79,17 @@ export default function News(props) {
         {articles.map((element)=>
         {
           return !loading &&<div className="col md-4" key = {element.url}>
-              <Newsitem  title={element.title?element.title.slice(0,40):""} description={element.description?element.description.slice(0,88):""} imageurl = {element.urlToImage?element.urlToImage:""} newsurl = {element.url}></Newsitem>
+              <Newsitem  title={element.title?element.title.slice(0,40):""} 
+              description={element.description?element.description.slice(0,88):""} 
+              imageurl = {element.urlToImage?element.urlToImage:""} 
+              newsurl = {element.url} author={element.author} 
+              date={element.publishedAt}></Newsitem>
           </div>
           })}
         </div>
           <div className='container d-flex  justify-content-between'>
             <button disabled = {page<=1} onClick={handleprevious} type="button" className="btn btn-dark">&laquo; Previous</button>
-           <button disabled = {page + 1 > Math.ceil(totalresults/props.pageSize)} onClick={handlenext} type="button" className="btn btn-dark">Next &raquo;</button>
+           <button disabled = {page +1 > Math.ceil(totalresults/props.pagesize)} onClick={handlenext} type="button" className="btn btn-dark">Next &raquo;</button>
         </div>
     </div>
   )  
