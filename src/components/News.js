@@ -33,9 +33,10 @@ export default function News(props) {
   };
 
   const fetchMoreData = async () => {
-    setPage(page + 1);
+    
     setloading(true);
-    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pagesize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pagesize}`;
+    setPage(page + 1);
     let data = await fetch(url);
     let parsedData = await data.json();
     setarticles(articles.concat(parsedData.articles));
@@ -44,11 +45,12 @@ export default function News(props) {
   };
   useEffect(() => {
     updatenews();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <>
-      <h1 style={{ margin: "40px" }} className="text-center">
+      <h1 style={{ margin: "90px" }} className="text-center">
         NewsMania - Top {capitalizedFirsLetter(props.category)} Headlines
       </h1>
       {loading && <Spinner />}
@@ -57,7 +59,7 @@ export default function News(props) {
         dataLength={articles.length}
         next={fetchMoreData}
         hasMore={articles.length !== totalresults}
-        loader={<Spinner loading={loading}></Spinner>}
+        loader={<Spinner ></Spinner>}
       >
         <div className="container">
           <div className="row d-flex justify-content-center ">
