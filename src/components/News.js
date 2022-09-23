@@ -62,7 +62,7 @@ export default function News(props) {
         loader={<Spinner ></Spinner>}
       >
         <div className="container">
-          <div className="row d-flex justify-content-center ">
+          <div className="row justify-content-center ">
             {articles.map((element) => {
               return (
                 <div className="col md-4" key={element.url}>
