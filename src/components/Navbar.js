@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   return (
     <div>
-      <nav className="navbar navbar-dark navbar-expand-lg bg-dark ">
+      <nav className="navbar fixed-top navbar-dark navbar-expand-lg bg-dark ">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             NewsMania
