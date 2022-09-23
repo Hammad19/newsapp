@@ -3,8 +3,8 @@ import React from "react";
 export default function Newsitem(props) {
   return (
     <div className="my-3">
-      <span class="badge badge-dark">Dark</span>
-      <div className="card" style={{ width: "18rem" }}>
+      {/* <span class="badge badge-dark">Dark</span> */}
+      <div className="card " style={{ width: "18rem" }}>
         <img src={props.imageurl} className="card-img-top" alt="..." />
         <div className="card-body">
           <h5 className="card-title">
